@@ -6,6 +6,8 @@ const aslSigns = ['🤟', '👍', '👋', '👏', '✌️', '👌'];
 export default function App() {
   const [typedSigns, setTypedSigns] = useState('');
   const [translation, setTranslation] = useState('');
+  const [currentFrame, setCurrentFrame] = useState('');
+  const [animating, setAnimating] = useState(false);
 
   const { transcript, listening, startListening } = useSpeechRecognition();
 
@@ -16,6 +18,8 @@ export default function App() {
   const clearSigns = () => {
     setTypedSigns('');
     setTranslation('');
+    setCurrentFrame('');
+    setAnimating(false);
   };
 
   const translateSigns = () => {
@@ -51,14 +55,32 @@ export default function App() {
   };
 
   const saveTranslationToFile = () => {
-  const fileContent = `Signs: ${typedSigns}\nTranslation: ${translation}`;
-  const blob = new Blob([fileContent], { type: 'text/plain' });
-  const link = document.createElement('a');
-  link.download = 'asl_translation.txt';
-  link.href = URL.createObjectURL(blob);
-  link.click();
-};
+    const fileContent = `Signs: ${typedSigns}\nTranslation: ${translation}`;
+    const blob = new Blob([fileContent], { type: 'text/plain' });
+    const link = document.createElement('a');
+    link.download = 'asl_translation.txt';
+    link.href = URL.createObjectURL(blob);
+    link.click();
+  };
 
+  const animateSigns = () => {
+    if (!typedSigns) return;
+    setAnimating(true);
+    let index = 0;
+
+    const interval = setInterval(() => {
+      setCurrentFrame(typedSigns[index]);
+      index++;
+
+      if (index >= typedSigns.length) {
+        clearInterval(interval);
+        setTimeout(() => {
+          setAnimating(false);
+          setCurrentFrame('');
+        }, 1000);
+      }
+    }, 600); // 600ms per sign
+  };
 
   return (
     <div style={{ padding: 20, fontFamily: 'Arial, sans-serif', maxWidth: 800, margin: 'auto' }}>
@@ -127,20 +149,54 @@ export default function App() {
         {typedSigns}
       </div>
 
+      {/* Export Button */}
       <button
-  onClick={saveTranslationToFile}
-  style={{
-    padding: '8px 16px',
-    fontSize: 16,
-    cursor: 'pointer',
-    borderRadius: 5,
-    marginLeft: 10,
-    marginTop: 15
-  }}
->
-  💾 Save Translation
-</button>
+        onClick={saveTranslationToFile}
+        style={{
+          padding: '8px 16px',
+          fontSize: 16,
+          cursor: 'pointer',
+          borderRadius: 5,
+          marginLeft: 10,
+          marginTop: 15,
+        }}
+      >
+        💾 Save Translation
+      </button>
 
+      {/* Animate Button */}
+      <button
+        onClick={animateSigns}
+        style={{
+          padding: '8px 16px',
+          fontSize: 16,
+          cursor: 'pointer',
+          borderRadius: 5,
+          marginLeft: 10,
+          marginTop: 15,
+        }}
+      >
+        ▶️ Play Sign Animation
+      </button>
+
+      {/* Sign Animation */}
+      {animating && (
+        <>
+          <h3 style={{ marginTop: 30 }}>Animating Signs:</h3>
+          <div
+            style={{
+              fontSize: 80,
+              padding: 20,
+              textAlign: 'center',
+              border: '2px dashed #aaa',
+              borderRadius: 10,
+              marginBottom: 20,
+            }}
+          >
+            {currentFrame}
+          </div>
+        </>
+      )}
 
       {/* Translation Output */}
       <h3 style={{ marginTop: 20 }}>Translation Output:</h3>
