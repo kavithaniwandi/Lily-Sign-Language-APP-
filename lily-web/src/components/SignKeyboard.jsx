@@ -1,14 +1,21 @@
 import React from 'react';
+import css from './SignKeyboard.module.css';
 
 const aslSigns = ['🤟', '👍', '👋', '👏', '✌️', '👌'];
 
 export default function SignKeyboard({ onSignClick }) {
   return (
-    <div style={{ display: 'flex', gap: 15, fontSize: 40, cursor: 'pointer' }}>
+    <div className={css.keyboard}>
       {aslSigns.map((sign, index) => (
-        <span key={index} onClick={() => onSignClick(sign)} role="button" aria-label={`Sign ${sign}`}>
+        <div
+          key={index}
+          className={css.key}
+          onClick={() => onSignClick(sign)}
+          role="button"
+          aria-label={`Sign ${sign}`}
+        >
           {sign}
-        </span>
+        </div>
       ))}
     </div>
   );

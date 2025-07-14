@@ -1,7 +1,30 @@
 import { useState } from 'react';
 import useSpeechRecognition from './hooks/useSpeechRecognition';
 
-const aslSigns = ['🤟', '👍', '👋', '👏', '✌️', '👌'];
+const aslSigns = [
+  '🤟', // I love you
+  '👍', // Like
+  '👋', // Hello
+  '👏', // Love
+  '✌️', // Peace
+  '👌', // You
+  '👎', // Dislike
+  '🖐️', // Open hand
+  '✋', // Stop
+  '🖖', // Vulcan salute
+  '👈', // Point left
+  '👉', // Point right
+  '👆', // Point up
+  '👇', // Point down
+  '🫶', // Heart hands
+  '🤙', // Call me / Hang loose
+  '🙌', // Celebration
+  '👐', // Open palms
+  '🤲', // Prayer
+  '🫳', // Palm down
+  '🫴', // Palm up
+  '🤚', // Backhand raised
+];
 
 export default function App() {
   const [typedSigns, setTypedSigns] = useState('');
@@ -79,7 +102,7 @@ export default function App() {
           setCurrentFrame('');
         }, 1000);
       }
-    }, 600); // 600ms per sign
+    }, 600);
   };
 
   return (
@@ -88,7 +111,7 @@ export default function App() {
 
       {/* Sign Keyboard */}
       <h2>Sign Keyboard</h2>
-      <div style={{ display: 'flex', gap: 15, fontSize: 40, cursor: 'pointer' }}>
+      <div style={{ display: 'flex', flexWrap: 'wrap', gap: 15, fontSize: 40, cursor: 'pointer' }}>
         {aslSigns.map((sign, i) => (
           <span key={i} onClick={() => addSign(sign)} role="button" aria-label={`Sign ${sign}`}>
             {sign}

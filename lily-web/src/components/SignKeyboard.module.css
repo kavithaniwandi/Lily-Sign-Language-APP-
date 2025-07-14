@@ -1,4 +1,11 @@
-.sign-keyboard {
+:root {
+  --soft-gray: #f5f5f5;
+  --accent: #00bcd4;
+  --accent: #00bcd4;
+  --soft-gray: #f5f5f5;
+}
+
+.keyboard {
   display: flex;
   flex-wrap: wrap;
   gap: 1rem;
@@ -7,10 +14,10 @@
   padding: 1rem;
 }
 
-.sign-key {
+.key {
   width: 60px;
   height: 60px;
-  background-color: var(--soft-gray, #f5f5f5);
+  background-color: var(--soft-gray);
   border-radius: 15px;
   display: flex;
   align-items: center;
@@ -22,8 +29,8 @@
   user-select: none;
 }
 
-.sign-key:hover {
+.key:hover {
   transform: scale(1.1);
-  background-color: var(--accent, #00bcd4);
+  background-color: var(--accent);
   color: white;
 }
